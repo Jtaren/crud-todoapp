@@ -20,7 +20,7 @@
 		<div id="error" class="hidden">Something went wrong!</div>
 		<ul id="todos">
 			{% for d in data %}
-			<li><input class="check-completed" type="checkbox" {% if d.completed %} checked {% endif %}/>{{ d.description }}</li>
+			<li><input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked {% endif %}/>{{ d.description }}</li>
 			{% endfor %}
 		</ul>
 		<script>
@@ -30,6 +30,7 @@
 				checkbox.onchange = function(e) {
 				console.log('event', e);
 				const newCompleted = e.target.checked;
+				const todoId = e.target.dataset['id'];
 				fetch('/todos/set-completed', {
 				method: 'POST',
 					body: JSON.stringify({
@@ -37,6 +38,12 @@
 					}),
 					headers: {
 					'Content-Type': 'application/json'}
+					})
+					.then(function() {
+						document.getElementById('error').className = 'hidden';
+						})
+					.catch(function() {
+						document.getElementById('error').className = '';
 					})
 				}
 			}
