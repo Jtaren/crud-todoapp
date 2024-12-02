@@ -16,7 +16,7 @@ class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(), nullable=False)
     completed = db.Column(db.Boolean, default=False)
-    list_id = db.Column(db.Integer, db.ForeignKey ('todolists.id'), nullable=False)
+    list_id = db.Column(db.Integer, db.ForeignKey ('todolists.id'), nullable=True)
     
     def __repr__(self):
         return f'<Todo {self.id} {self.description}>'
@@ -43,7 +43,7 @@ def create_todo():
     except:
         error = True
         db.session.rollback()
-        print(sys.ecx_info())
+        print(sys.exc_info())
     finally:
         db.session.close()
     if not error:
